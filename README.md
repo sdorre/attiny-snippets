@@ -26,9 +26,10 @@ This snippet show how to fetch temperature and humidity data from an I2C tempera
 Firmware Running a few second and then going to sleep. You can wake it up using a button on pin 5 (PB0). It will alternate between Deep Sleep and Idle state.
 
 Power Measurements :
-- Running : TODO
-- Sleep Idle : TODO
-- Deep Sleep : TODO
+- Running at 1MHz: 1.23mA (+20ma if the led is plugged)
+- Running at 8MHz: 4.35mA (+20ma if the led is plugged)
+- Sleep Idle : 814uA
+- Deep Sleep : 235uA
 
 
 ## Notes
@@ -47,11 +48,15 @@ When compiling for an Attiny85, the include you want to see are :
 [source](https://www.nongnu.org/avr-libc/user-manual/group__avr__sfr.html)
 
 ```
-Access to the AVR single bit set and clear instructions are provided via the standard C bit manipulation commands. The sbi and cbi macros are no longer directly supported. sbi (sfr,bit) can be replaced by sfr |= _BV(bit) .
+Access to the AVR single bit set and clear instructions are provided via the standard C bit manipulation
+commands. The sbi and cbi macros are no longer directly supported.
+sbi (sfr,bit) can be replaced by sfr |= _BV(bit) .
 
 i.e.: sbi(PORTB, PB1); is now PORTB |= _BV(PB1);
 
-This actually is more flexible than having sbi directly, as the optimizer will use a hardware sbi if appropriate, or a read/or/write operation if not appropriate. You do not need to keep track of which registers sbi/cbi will operate on.
+This actually is more flexible than having sbi directly, as the optimizer will use a hardware sbi if
+appropriate, or a read/or/write operation if not appropriate. You do not need to keep track of which
+registers sbi/cbi will operate on.
 
 Likewise, cbi (sfr,bit) is now sfr &= ~(_BV(bit));
 ```
